@@ -38,9 +38,6 @@ class CategoryController extends Controller
         $data = $request->validate([
             'name' =>'required|string|max:255|unique:categories,name',
         ]);
-        $data = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name',
-        ]);
         Category::create($data);
         session()->flash('swal', [
             'title' => 'Categoría creada',
