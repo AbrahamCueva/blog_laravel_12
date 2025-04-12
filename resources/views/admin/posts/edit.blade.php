@@ -11,10 +11,24 @@
         </flux:breadcrumbs.item>
     </flux:breadcrumbs>
 
-    <div class="card">
-        <form action="{{ route('admin.posts.update', $post) }}" method="POST" class="space-y-4">
-            @csrf
-            @method('PUT')
+    <form action="{{ route('admin.posts.update', $post) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+
+        <div class="relative mb-2">
+            {{-- <img class="w-full aspect-video object-cover object-center" src="https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg" alt=""> --}}
+            <img id="imgPreview" class="w-full aspect-video object-cover object-center rouded" 
+                src="{{ $post->image_path ? asset($post->image_path) : 'https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg' }}" 
+                alt="">
+            <div class="absolute top-8 right-8">
+                <label class="bg-white p-2 rounded-full cursor-pointer hover:bg-gray-100">
+                    Cambiar imágen
+                    <input type="file" class="hidden" name="image" accept="image/*" onchange="previewImage(event, '#imgPreview')">
+                </label>
+            </div>
+        </div>
+
+        <div class="card space-y-4">
             <flux:input label="Título" name="title" value="{{ old('title', $post->title) }}" class="@error('title') is-invalid @enderror" placeholder="Escribe el título del post" />
             <flux:input label="Slug" name="slug" value="{{ old('slug', $post->slug) }}" readonly class="@error('slug') is-invalid @enderror" placeholder="Escribe el slug del post" />
             <flux:select wire:model="industry" name="category_id" label="Seleccionar categoría" 
@@ -50,25 +64,6 @@
                     <i class="fa-solid fa-pen-to-square"></i>
                 </flux:button>
             </div>
-        </form>
-    </div>
-    @push('js')
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const nameInput = document.querySelector("input[name='title']");
-                const slugInput = document.querySelector("input[name='slug']");
-    
-                nameInput.addEventListener("input", function() {
-                    let slug = nameInput.value
-                        .normalize("NFD").replace(/[\u0300-\u036f]/g, '') // Elimina acentos
-                        .toLowerCase()
-                        .replace(/[^a-z0-9\s-]/g, '')  
-                        .replace(/\s+/g, '-')         
-                        .replace(/-+/g, '-');         
-    
-                    slugInput.value = slug;
-                });
-            });
-        </script>
-    @endpush
+        </div>
+    </form>
 </x-layouts.app>

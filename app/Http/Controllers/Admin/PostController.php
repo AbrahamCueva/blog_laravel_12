@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -80,8 +81,18 @@ class PostController extends Controller
             'category_id' => 'required|exists:categories,id',
             'excerpt' => 'nullable',
             'content' => 'nullable',
+            'image' => 'nullable|image',
             'is_published' => 'required|boolean',
         ]);
+        if ($request->hasFile('image')) {
+            if ($post->image_path && file_exists(public_path($post->image_path))) {
+                unlink(public_path($post->image_path));
+            }
+            
+            $fileName = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('uploads/posts'), $fileName);
+            $data['image_path'] = 'uploads/posts/' . $fileName;
+        }
         $post->update($data);
         session()->flash('swal', [
             'icon' => 'success',
