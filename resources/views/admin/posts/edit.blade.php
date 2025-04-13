@@ -22,7 +22,7 @@
         <div class="relative mb-2">
             {{-- <img class="w-full aspect-video object-cover object-center" src="https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg" alt=""> --}}
             <img id="imgPreview" class="w-full aspect-video object-cover object-center rounded" 
-                src="{{ $post->image_path ? asset($post->image_path) : 'https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg' }}" 
+                src="{{ $post->image }}" 
                 alt="">
             <div class="absolute top-8 right-8">
                 <label class="bg-white p-2 rounded-full cursor-pointer hover:bg-gray-100">

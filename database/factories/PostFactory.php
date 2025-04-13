@@ -24,8 +24,8 @@ class PostFactory extends Factory
             'content' => $this->faker->text(1000),
             'user_id' => 1,
             'category_id' => Category::all()->random()->id,
-            // 'is_published' => true,
-            // 'published_at' => now(),
+            'is_published' => true,
+            'published_at' => now(),
         ];
     }
 }
