@@ -1,4 +1,8 @@
 <x-layouts.app>
+    @push('css')
+        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    @endpush
     <flux:breadcrumbs class="mb-8">
         <flux:breadcrumbs.item :href="route('dashboard')">
             Dashboard
@@ -42,9 +46,59 @@
             <flux:textarea label="Resumen" name="excerpt" class="@error('excerpt') is-invalid @enderror" rows="3">
                 {{ old('excerpt', $post->excerpt) }}
             </flux:textarea>
-            <flux:textarea label="Contenido" name="content" class="@error('content') is-invalid @enderror" rows="8">
+            {{-- <flux:textarea label="Contenido" name="content" class="@error('content') is-invalid @enderror" rows="8">
                 {{ old('content', $post->content) }}
-            </flux:textarea>
+            </flux:textarea> --}}
+            <div>
+                <p class="txt-sm font-medium mb-1">Contenido</p>
+                <div id="toolbar">
+                    <span class="ql-formats">
+                        <select class="ql-font"></select>
+                        <select class="ql-size"></select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <select class="ql-color"></select>
+                        <select class="ql-background"></select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-script" value="sub"></button>
+                        <button class="ql-script" value="super"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-header" value="1"></button>
+                        <button class="ql-header" value="2"></button>
+                        <button class="ql-blockquote"></button>
+                        <button class="ql-code-block"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                        <button class="ql-indent" value="-1"></button>
+                        <button class="ql-indent" value="+1"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-direction" value="rtl"></button>
+                        <select class="ql-align"></select>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-link"></button>
+                        <button class="ql-image"></button>
+                        <button class="ql-video"></button>
+                        <button class="ql-formula"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-clean"></button>
+                    </span>
+                </div>
+                <div id="editor">{!! old('content', $post->content) !!}</div>
+                <textarea name="content" id="content" class="hidden">{{ old('content', $post->content) }}</textarea>
+            </div>
             <div>
                 <p class="txt-sm font-medium mb-1">Etiquetas</p>
                 <ul>
@@ -85,4 +139,23 @@
             </div>
         </div>
     </form>
+    
+@push('js')
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                sintax: true,
+                toolbar: '#toolbar'
+            }
+        });
+        quill.on('text-change', function() {
+            document.querySelector('#content').value = quill.root.innerHTML;
+        });
+        hljs.highlightAll();
+    </script>
+@endpush
 </x-layouts.app>
+
