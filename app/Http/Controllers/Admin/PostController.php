@@ -88,6 +88,7 @@ class PostController extends Controller
             'tags.*' => 'exists:tags,id',
             'is_published' => 'required|boolean',
         ]);
+        
         if ($request->hasFile('image')) {
             if ($post->image_path && file_exists(public_path($post->image_path))) {
                 unlink(public_path($post->image_path));
