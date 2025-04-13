@@ -112,6 +112,16 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        if ($post->image_path && file_exists(public_path($post->image_path))) {
+            unlink(public_path($post->image_path));
+        }
+        $post->delete();
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => 'Post eliminado!',
+            'message' => 'El post ha sido eliminado exitosamente.',
+        ]);
+
+        return redirect()->route('admin.posts.index');
     }
 }
