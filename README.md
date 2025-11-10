@@ -23,7 +23,7 @@
 git clone https://github.com/AbrahamCueva/blog.git
 ```
 ```bash
-cd blog-laravel
+cd blog
 ```
 <h3>📌 Instalar dependencias</h3> <p>Ejecuta los siguientes comandos para instalar las dependencias:</p>
 
